@@ -1,10 +1,10 @@
 #ifndef H_DEVICE_BRAILLE
 #define H_DEVICE_BRAILLE
 
-#include <brailleDisplay/brailleDisplay.h>
-#include<sensors/controlHub.h>
-#include<serial/brlSerial.h>
-#include<speaker/speaker.h>
+#include "brailleDisplay/brailleDisplay.h"
+#include"sensors/controlHub.h"
+#include"serial/brlSerial.h"
+#include"speaker/speaker.h"
 
 class device{
 public:
@@ -14,5 +14,7 @@ public:
 	speaker sound;
 	void processSerInput();
 };
+
+void device::processSerInput(){};
 
 #endif

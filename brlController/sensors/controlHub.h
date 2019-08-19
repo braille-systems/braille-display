@@ -1,21 +1,29 @@
 #ifndef H_HUB_CONTROL
 #define H_HUB_CONTROL
 
-#include<string>
-#include<vector>
-#include<speaker/pitches.h>
+#ifdef DEBUG_MODE
+    #include<string>
+    #include<vector>
+	#ifndef String
+			#define String std::string;
+    #endif //String
+#else
+    #include <ArduinoSTL.h>
+#endif //DEBUG_MODE
+
+#include"../speaker/pitches.h"
 #include"button.h"
 #include"joystick.h"
 
 struct keysRefreshRes{
     bool soundMode;
     note::note_t toSpeaker;
-    std::string toSerial;
+    String toSerial;
 };
 
 class controlHub{
 	std::vector<button> keys;
-	button helpButton;
+    button helpButton;
 	button muteButton;
 	joystick jStick;
 public:
@@ -25,5 +33,16 @@ public:
 	virtual ~controlHub(){/*TODO: free keys*/};
 	keysRefreshRes refresh();
 };
+
+keysRefreshRes controlHub::refresh(){
+    /*TODO: implement*/
+    /**@usage call as frequently as possible to catch all user's input.
+     * Normally there is no delay in this function*/
+    keysRefreshRes res;
+    res.toSerial = "";
+    res.toSpeaker = note::none;
+    res.soundMode = true; //sound on
+    return res;
+}
 
 #endif
