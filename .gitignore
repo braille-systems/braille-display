@@ -16,5 +16,7 @@
 
 #TeX artifacts
 *.aux
+*.log
+*.out
 *.synctex
 *.synctex.gz
