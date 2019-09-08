@@ -14,10 +14,14 @@ struct dispRefreshRes{
 };
 
 class brailleDisplay{
+	long double jobStarted; //time since display started printing
+	String text;
+	int currChar; //number of char in "text" that is currently printed
 public:
     void setText(String txt);
     dispRefreshRes refresh();
     bool isWorking(){return false; /*TODO: implement*/}
+	brailleDisplay() {jobStarted = -1.0; }
 };
 
 void brailleDisplay::setText(String txt){/*TODO: implement*/}
