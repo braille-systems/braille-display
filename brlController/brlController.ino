@@ -3,7 +3,7 @@
 
 
 void setup (){
-	
+	stepper s;
 }
 
 void loop () {}
