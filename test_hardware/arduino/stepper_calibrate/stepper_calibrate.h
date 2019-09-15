@@ -1,7 +1,6 @@
-#ifndef H_STEPPER_BRAILLE
-#define H_STEPPER_BRAILLE
+#ifndef H_STEPPER_CALIBRATE_BRAILLE
+#define H_STEPPER_CALIBRATE_BRAILLE
 
-//http://techclub.su/article_arduino07
 
 enum charHalf {
 	first,
@@ -17,18 +16,25 @@ class stepper {
   const int pinDisableStepper = 9; //D9
 	const int maxCalibSteps = 1800; //stop if no endstop signal after maxCalibSteps
 	const int calibPace = 1;
-	const int initPosOffset = 1630; //offset in steps from place where endstop touches the bumper to initial position (zeroth character, first half)
-	const int halfCharSteps = 0; //steps to move along half a character
-	const int halfToFullChar = 0; // steps to move from first to second half
+	int initPosOffset = 1630; //offset in steps from place where endstop touches the bumper to initial position (zeroth character, first half)
+	int halfCharSteps = -20; //steps to move along half a character
+	int halfToFullChar = -20; // steps to move from first to second half
 	int currChar; // number of current char
 	charHalf currCharHalf; // number of current char half
 	bool isBroken = false;
 	
-	void rotate(int steps);
 public:
 	stepper();
 	void gotochar (int nchar, charHalf half);
 	bool broken(){return isBroken; }
+	
+	void rotate(int steps);
+	int getInitPosOffset(){return initPosOffset; }
+	void setInitPosOffset(int value){initPosOffset = value; }
+	int getHalfCharSteps(){return halfCharSteps; }
+	void setHalfCharSteps(int value){halfCharSteps = value; }
+	int getHalfToFullChar(){return halfToFullChar; }
+	void setHalfToFullChar(int value){halfToFullChar = value; }
 };
 
 stepper::stepper (){
