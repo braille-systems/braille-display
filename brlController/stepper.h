@@ -9,12 +9,13 @@ enum charHalf {
 };
 
 class stepper {
-  /*settings for 1/16 of step (ms1=0, ms2=1, ms3=1)*/
+	int nchars = 5; //number of characters in a display
+	/*settings for 1/16 of step (ms1=0, ms2=1, ms3=1)*/
 	const int pinStep = 5; //D5
 	const int pinDir = 4; //D4
 	const int moveDelay = 3; //delay between steps in milliseconds
 	const int pinEndstop = 3;
-  const int pinDisableStepper = 9; //D9
+	const int pinDisableStepper = 9; //D9
 	const int maxCalibSteps = 1800; //stop if no endstop signal after maxCalibSteps
 	const int calibPace = 1;
 	const int initPosOffset = 1630; //offset in steps from place where endstop touches the bumper to initial position (zeroth character, first half)
@@ -59,7 +60,11 @@ stepper::stepper (){
 }
 
 void stepper::gotochar (int nchar, charHalf half){
-	
+	int steps = (nchar - currChar) * (halfCharSteps + halfToFullChar);
+	if (half == second && currCharHalf == first) steps += halfToFullChar;
+	if (half == first && currCharHalf == second) steps -= halfToFullChar;
+	steps *= -1; //direction is opposite
+	rotate(steps);
 }
 
 void stepper::rotate(int steps){

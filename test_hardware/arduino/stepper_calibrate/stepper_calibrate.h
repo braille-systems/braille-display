@@ -8,6 +8,7 @@ enum charHalf {
 };
 
 class stepper {
+	int nchars = 5; //number of characters in a display
   /*settings for 1/16 of step (ms1=0, ms2=1, ms3=1)*/
 	const int pinStep = 5; //D5
 	const int pinDir = 4; //D4
@@ -30,11 +31,21 @@ public:
 	
 	void rotate(int steps);
 	int getInitPosOffset(){return initPosOffset; }
-	void setInitPosOffset(int value){initPosOffset = value; }
+	void setInitPosOffset(int value){
+		gotochar(0, first);
+		rotate(value - initPosOffset);
+		initPosOffset = value;
+		}
 	int getHalfCharSteps(){return halfCharSteps; }
-	void setHalfCharSteps(int value){halfCharSteps = value; }
+	void setHalfCharSteps(int value){
+		gotochar(0, first);
+		halfCharSteps = value;
+		}
 	int getHalfToFullChar(){return halfToFullChar; }
-	void setHalfToFullChar(int value){halfToFullChar = value; }
+	void setHalfToFullChar(int value){
+		gotochar(0, first);
+		halfToFullChar = value; 
+		}
 };
 
 stepper::stepper (){
@@ -65,7 +76,12 @@ stepper::stepper (){
 }
 
 void stepper::gotochar (int nchar, charHalf half){
-	
+	if (nchar > nchars || nchar < 0) return;
+	int steps = (nchar - currChar) * (halfCharSteps + halfToFullChar);
+	if (half == second && currCharHalf == first) steps += halfToFullChar;
+	if (half == first && currCharHalf == second) steps -= halfToFullChar;
+	steps *= -1; //direction is opposite
+	rotate(steps);
 }
 
 void stepper::rotate(int steps){
