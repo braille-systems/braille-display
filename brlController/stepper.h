@@ -18,12 +18,15 @@ class stepper {
 	const int pinDisableStepper = 9; //D9
 	const int maxCalibSteps = 1800; //stop if no endstop signal after maxCalibSteps
 	const int calibPace = 1;
-	const int initPosOffset = 1630; //offset in steps from place where endstop touches the bumper to initial position (zeroth character, first half)
-	const int halfCharSteps = 0; //steps to move along half a character
-	const int halfToFullChar = 0; // steps to move from first to second half
+	
 	int currChar; // number of current char
 	charHalf currCharHalf; // number of current char half
 	bool isBroken = false;
+	
+protected:
+	int initPosOffset = 1630; //offset in steps from place where endstop touches the bumper to initial position (zeroth character, first half)
+	int halfCharSteps = 70; //steps to move along half a character
+	int halfToFullChar = 63; // steps to move from first to second half
 	
 	void rotate(int steps);
 public:
@@ -65,6 +68,8 @@ void stepper::gotochar (int nchar, charHalf half){
 	if (half == first && currCharHalf == second) steps -= halfToFullChar;
 	steps *= -1; //direction is opposite
 	rotate(steps);
+	currChar = nchar;
+	currCharHalf = half;
 }
 
 void stepper::rotate(int steps){
