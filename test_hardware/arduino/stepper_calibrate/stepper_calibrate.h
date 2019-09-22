@@ -9,6 +9,8 @@
 
 class stepperCalib : public stepper {
 public:
+  int getCurrCharHalf(){return currCharHalf; }
+  int getCurrChar(){return currChar;}
 	int getInitPosOffset(){return initPosOffset; }
 	void addtoInitPosOffset(int value){
 		gotochar(0, first);

@@ -19,14 +19,14 @@ class stepper {
 	const int maxCalibSteps = 1800; //stop if no endstop signal after maxCalibSteps
 	const int calibPace = 1;
 	
-	int currChar; // number of current char
-	charHalf currCharHalf; // number of current char half
-	bool isBroken = false;
-	
 protected:
+  int currChar; // number of current char
+  charHalf currCharHalf; // number of current char half
+  bool isBroken = false;
+
 	int initPosOffset = 1630; //offset in steps from place where endstop touches the bumper to initial position (zeroth character, first half)
-	int halfCharSteps = 70; //steps to move along half a character
-	int halfToFullChar = 63; // steps to move from first to second half
+	int halfCharSteps = 150; //steps to move along half a character
+	int halfToFullChar = 155; // steps to move from first to second half
 	
 	void rotate(int steps);
 public:
@@ -63,9 +63,13 @@ stepper::stepper (){
 }
 
 void stepper::gotochar (int nchar, charHalf half){
+  if(nchar > nchars - 1 || nchar < 0){ //if requested to move out of boundaries...
+    isBroken = true; //something went wrong
+    return;
+  }
 	int steps = (nchar - currChar) * (halfCharSteps + halfToFullChar);
-	if (half == second && currCharHalf == first) steps += halfToFullChar;
-	if (half == first && currCharHalf == second) steps -= halfToFullChar;
+	if (half == second && currCharHalf == first) steps += halfCharSteps;
+	if (half == first && currCharHalf == second) steps -= halfCharSteps;
 	steps *= -1; //direction is opposite
 	rotate(steps);
 	currChar = nchar;

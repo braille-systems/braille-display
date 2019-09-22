@@ -24,7 +24,7 @@ void setup (){
 			switch((int)request[0]){
 			case 'g':
 				nLetter = (int)(request[1] - '0');
-				halfLetter = (request[2] == '1') ? first : second;
+				halfLetter = (request[2] == '0') ? first : second;
 				s.gotochar(nLetter, halfLetter);
         Serial.println("Gotochar: char " + String(nLetter) + ", half " + String(request[2]));
 				break;
@@ -53,6 +53,8 @@ void setup (){
 				Serial.println("initPosOffset="+String(s.getInitPosOffset()));
 				Serial.println("halfCharSteps="+String(s.getHalfCharSteps()));
 				Serial.println("halfToFullChar="+String(s.getHalfToFullChar()));
+        Serial.println("currChar="+String(s.getCurrChar()));
+        Serial.println("currCharHalf="+String(s.getCurrCharHalf()));
 				break;
 			default:
 				Serial.println("unknown command - no command starting with " + request.substring(0,1));
